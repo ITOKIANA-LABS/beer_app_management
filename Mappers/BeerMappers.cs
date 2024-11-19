@@ -5,7 +5,7 @@ using beer_app_management.Models;
 
 namespace beer_app_management.Mappers
 {
-    public static class BeweryBeerMappers
+    public static class BeerMappers
     {
         public static BeweryBeerDto ToBeweryBeerDto (this Beer beerModel)
         {
