@@ -17,5 +17,15 @@ namespace beer_app_management.Mappers
                 Price = beerModel.Price
             };
         }
+
+        public static Beer ToBeerFromAddBeerDto (this AddBeerRequestDto addBeerRequestDto)
+        {
+            return new Beer
+            {
+                Name = addBeerRequestDto.Name,
+                Alcohol = addBeerRequestDto.Alcohol,
+                Price = addBeerRequestDto.Price
+            };
+        }
     }
 }
