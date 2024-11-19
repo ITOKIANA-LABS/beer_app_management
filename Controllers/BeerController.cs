@@ -46,5 +46,42 @@ namespace beer_app_management.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = beerModel.Id }, beerModel.ToBeweryBeerDto());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateBeerRequestDto updateBeerDto)
+        {
+            var beerModel = _context.Beer.FirstOrDefault(b => b.Id == id);
+
+            if(beerModel == null)
+            {
+                return NotFound();
+            }
+
+            beerModel.Name = updateBeerDto.Name;
+            beerModel.Alcohol = updateBeerDto.Alcohol;
+            beerModel.Price = updateBeerDto.Price;
+
+            _context.SaveChanges();
+
+            return Ok(beerModel.ToBeweryBeerDto());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var beerModel = _context.Beer.FirstOrDefault(b => b.Id == id);
+
+            if(beerModel == null)
+            {
+                return NotFound();
+            }
+
+            _context.Beer.Remove(beerModel);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
