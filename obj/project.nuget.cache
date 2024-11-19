@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "NjqLyeCNejbCtTg7YlABvgiq1vJatAqRZmeXIQD1NYJEnGjaFmSYT0xCCIdszz2kA5AWsfaB6UnCmTdsODcz9Q==",
+  "dgSpecHash": "HJUjHvpq2zM3R44maC23Pa85QVjkSnxNzvcjywGq1XfCTU4i7GdxttezeyXcsOqMo0nee372gy5nSfZfbmV03A==",
   "success": true,
   "projectFilePath": "/home/itokiana/Documents/TESTS/beer_app_management/beer_app_management.csproj",
   "expectedPackageFiles": [
     "/home/itokiana/.nuget/packages/azure.core/1.25.0/azure.core.1.25.0.nupkg.sha512",
     "/home/itokiana/.nuget/packages/azure.identity/1.7.0/azure.identity.1.7.0.nupkg.sha512",
+    "/home/itokiana/.nuget/packages/dotenv.net/3.2.1/dotenv.net.3.2.1.nupkg.sha512",
     "/home/itokiana/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/itokiana/.nuget/packages/microsoft.aspnetcore.openapi/8.0.10/microsoft.aspnetcore.openapi.8.0.10.nupkg.sha512",
     "/home/itokiana/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

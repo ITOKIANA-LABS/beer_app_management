@@ -1,0 +1,17 @@
+using beer_app_management.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace api.Data
+{
+    public class ApplicationDBContext : DbContext
+    {
+        public ApplicationDBContext(DbContextOptions dbContextOptions)
+        : base(dbContextOptions)
+        {
+            
+        }
+
+        public DbSet<Beer> Beer { get; set; }
+        public DbSet<WSStock> WSStock { get; set; }
+    }
+}
