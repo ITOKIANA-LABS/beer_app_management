@@ -43,25 +43,72 @@ namespace beer_app_management.Controllers
             _context.WSStock.Add(wsStockModel);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetById), new { id = wsStockModel.Id }, wsStockModel.ToStockDto());
+            var beerModel = _context.Beer.Find(stockDto.BeerId);
+
+            if(beerModel == null)
+            {
+                return StatusCode(500, "No type of beer found");
+            }
+
+            return CreatedAtAction(nameof(GetById), new { id = wsStockModel.Id }, wsStockModel.ToStockDto(beerModel));
         }
 
         [HttpPut]
-        [Route("{beerId}")]
+        [Route("{beerId}/update_stock")]
         public IActionResult UpdateStock([FromRoute] int beerId, [FromBody] UpdateStockRequestDto updateStockDto)
         {
             var wSStockModel = _context.WSStock.FirstOrDefault(b => b.BeerId == beerId);
+            var beerModel = _context.Beer.Find(beerId);
 
-            if(wSStockModel == null)
+            if(wSStockModel == null || beerModel == null)
             {
                 return NotFound();
             }
 
-            wSStockModel.Quantity = updateStockDto.Quantity;
+            wSStockModel.Quantity += updateStockDto.Quantity;
 
             _context.SaveChanges();
 
-            return Ok(wSStockModel.ToStockDto());
+            return Ok(wSStockModel.ToStockDto(beerModel));
+        }
+
+        [HttpPut]
+        [Route("{beerId}/new_order")]
+        public IActionResult Order([FromRoute] int beerId, [FromBody] UpdateStockRequestDto updateStockDto)
+        {
+            var wSStockModel = _context.WSStock.FirstOrDefault(b => b.BeerId == beerId);
+            var beerModel = _context.Beer.Find(beerId);
+            var qtyOrder = updateStockDto.Quantity;
+            decimal priceTTC = 0;
+            string discount = "0%";
+
+            if(wSStockModel == null || beerModel == null)
+            {
+                return NotFound();
+            }
+
+            if(wSStockModel.Quantity < qtyOrder)
+            {
+                return StatusCode(500, "The number of beers ordered cannot be greater than the wholesaler's stock");
+            }
+
+            wSStockModel.Quantity -= qtyOrder;
+
+            _context.SaveChanges();
+
+            var totalBasePrice = beerModel.Price * qtyOrder;
+            if(qtyOrder >= 10 && qtyOrder < 20)
+            {
+                priceTTC = totalBasePrice - (totalBasePrice * (decimal)0.1);
+                discount = "10%";
+            }
+            if(qtyOrder >= 20)
+            {
+                priceTTC = totalBasePrice - (totalBasePrice * (decimal)0.2);
+                discount = "20%";
+            }
+
+            return Ok(wSStockModel.ToOrderDto(beerModel, qtyOrder, priceTTC, discount));
         }
     }
 }
