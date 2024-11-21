@@ -1,6 +1,7 @@
 using api.Data;
 using beer_app_management.Dtos.WSStock;
 using beer_app_management.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace beer_app_management.Controllers
@@ -16,6 +17,7 @@ namespace beer_app_management.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             var stocks = _context.WSStock.ToList();
@@ -24,6 +26,7 @@ namespace beer_app_management.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetById([FromRoute] int id)
         {
             var stock = _context.WSStock.Find(id);
@@ -37,6 +40,7 @@ namespace beer_app_management.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddToStock([FromBody] AddToStockRequestDto stockDto)
         {
             var wsStockModel = stockDto.ToStockFromUpdateStockDto();
@@ -55,6 +59,7 @@ namespace beer_app_management.Controllers
 
         [HttpPut]
         [Route("{beerId}/update_stock")]
+        [Authorize]
         public IActionResult UpdateStock([FromRoute] int beerId, [FromBody] UpdateStockRequestDto updateStockDto)
         {
             var wSStockModel = _context.WSStock.FirstOrDefault(b => b.BeerId == beerId);
@@ -74,6 +79,7 @@ namespace beer_app_management.Controllers
 
         [HttpPut]
         [Route("{beerId}/new_order")]
+        [Authorize]
         public IActionResult Order([FromRoute] int beerId, [FromBody] UpdateStockRequestDto updateStockDto)
         {
             var wSStockModel = _context.WSStock.FirstOrDefault(b => b.BeerId == beerId);
