@@ -1,5 +1,6 @@
 using api.Data;
 using beer_app_management.Dtos.Beer;
+using beer_app_management.Enums;
 using beer_app_management.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace beer_app_management.Controllers
 {
     [Route("api/v1/beers")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = nameof(RoleTypes.Brewer))]
     public class BeerController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
@@ -17,7 +19,6 @@ namespace beer_app_management.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetAll()
         {
             var beers = _context.Beer.ToList()
@@ -27,7 +28,6 @@ namespace beer_app_management.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public IActionResult GetById([FromRoute] int id)
         {
             var beer = _context.Beer.Find(id);
@@ -41,7 +41,6 @@ namespace beer_app_management.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Create([FromBody] AddBeerRequestDto beerDto)
         {
             var beerModel = beerDto.ToBeerFromAddBeerDto();
@@ -53,7 +52,6 @@ namespace beer_app_management.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize]
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateBeerRequestDto updateBeerDto)
         {
             var beerModel = _context.Beer.FirstOrDefault(b => b.Id == id);
@@ -74,7 +72,6 @@ namespace beer_app_management.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize]
         public IActionResult Delete([FromRoute] int id)
         {
             var beerModel = _context.Beer.FirstOrDefault(b => b.Id == id);

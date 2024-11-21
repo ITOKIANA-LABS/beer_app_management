@@ -33,6 +33,8 @@ namespace beer_app_management.Controllers
 
             if(user == null) return Unauthorized("Invalid username");
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if(!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
@@ -42,7 +44,7 @@ namespace beer_app_management.Controllers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user)
+                    Token = _tokenService.CreateToken(user, userRoles)
                 }
             );
         }
@@ -67,12 +69,13 @@ namespace beer_app_management.Controllers
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "Brewer");
                     if(roleResult.Succeeded)
                     {
+                        var userRoles = await _userManager.GetRolesAsync(appUser);
                         return Ok(
                             new NewUserDto
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
-                                Token = _tokenService.CreateToken(appUser)
+                                Token = _tokenService.CreateToken(appUser, userRoles)
                             }
                         );
                     }
