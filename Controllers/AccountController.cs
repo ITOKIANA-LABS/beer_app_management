@@ -66,7 +66,7 @@ namespace beer_app_management.Controllers
 
                 if(createdUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Brewer");
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, registerDto.UserRole);
                     if(roleResult.Succeeded)
                     {
                         var userRoles = await _userManager.GetRolesAsync(appUser);
