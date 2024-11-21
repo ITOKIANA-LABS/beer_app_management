@@ -5,6 +5,8 @@ using beer_app_management.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using beer_app_management.Interfaces;
+using beer_app_management.Service;
 
 DotEnv.Load();
 
@@ -58,6 +60,7 @@ builder.Services.AddAuthentication(options => {
         )
     };
 });
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
